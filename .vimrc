@@ -1,3 +1,5 @@
+" vim must be above version 8 and with python support
+
 " used to see if vim-plug is installed if not installs it
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -8,7 +10,6 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " core
-
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
@@ -26,6 +27,8 @@ Plug 'sheerun/vim-polyglot'
 Plug 'bkad/camelcasemotion'
 Plug 'romainl/flattened'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'skywind3000/asyncrun.vim'
+Plug 'pedsm/sprint'
 
 " theming
 Plug 'vim-airline/vim-airline'
@@ -33,12 +36,10 @@ Plug 'junegunn/goyo.vim'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/limelight.vim'
 Plug 'ryanoasis/vim-devicons'
+Plug 'airblade/vim-gitgutter'
 
 " language specific
 Plug 'deoplete-plugins/deoplete-jedi'
-
-" Plug 'julienr/vim-cellmode'
-" Plug 'scrooloose/syntastic'
 
 call plug#end()
 
@@ -180,3 +181,6 @@ map <space>vi :VimuxInspectRunner<CR>
 
 vmap <space>vs "vy :call VimuxSlime()<CR>
 nmap <space>vs vip<space>vs<CR>
+
+" sprint
+nnoremap <f5> :Sprint<CR>
