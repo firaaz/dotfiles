@@ -11,6 +11,7 @@ call plug#begin('~/.vim/plugged')
 
 " core
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
 Plug 'jiangmiao/auto-pairs'
@@ -19,7 +20,6 @@ Plug 'roxma/nvim-yarp'
 Plug 'Shougo/denite.nvim'
 Plug 'w0rp/ale'
 Plug 'Shougo/deoplete.nvim'
-Plug 'tpope/vim-unimpaired'
 Plug 'benmills/vimux'
 Plug 'szw/vim-tags'
 Plug 'scrooloose/nerdcommenter'
@@ -57,7 +57,7 @@ set relativenumber
 set splitbelow
 set splitright
 set mouse=a
-set expandtab
+set noexpandtab
 set wrap
 set linebreak
 set smartindent
@@ -75,7 +75,7 @@ set shiftwidth=4
 " set statusline+=%{SyntasticStatuslineFlag()}
 " set statusline+=%*
 
-" Writeroom things
+" Writeroom things [Goyo]
 let g:limelight_conceal_ctermfg = 'gray'
 nnoremap <leader>g :Goyo<Return>
 autocmd! User GoyoEnter Limelight
@@ -163,9 +163,9 @@ let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = '☰'
 let g:airline_symbols.maxlinenr = ''
 
-" ale bindings [not sure if this conflicts with the quickmenu of unimpaired yet([q ]q)]
-" nmap <silent> [e <Plug>(ale_previous_wrap)
-" nmap <silent> ]e <Plug>(ale_next_wrap)
+" ale bindings 
+nmap <silent> gE <Plug>(ale_previous_wrap)
+nmap <silent> ge <Plug>(ale_next_wrap)
 
 " Vimux bindings
 
@@ -182,5 +182,5 @@ map <space>vi :VimuxInspectRunner<CR>
 vmap <space>vs "vy :call VimuxSlime()<CR>
 nmap <space>vs vip<space>vs<CR>
 
-" sprint
+" Sprint
 nnoremap <f5> :Sprint<CR>
