@@ -65,4 +65,5 @@ export SCM_CHECK=true
 source "$BASH_IT"/bash_it.sh
 # export PYENV_ROOT="$HOME/.pyenv"
 # export PATH="$PYENV_ROOT/bin:$PATH"
+
 alias tmux='tmux -u'
