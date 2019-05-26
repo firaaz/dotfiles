@@ -24,17 +24,13 @@ Plug 'Shougo/deoplete.nvim'
 Plug 'szw/vim-tags'
 Plug 'scrooloose/nerdcommenter'
 Plug 'sheerun/vim-polyglot'
-Plug 'bkad/camelcasemotion'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'benmills/vimux'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'pedsm/sprint'
 
 " theming
-Plug 'vim-airline/vim-airline'
-Plug 'romainl/flattened'
 Plug 'junegunn/goyo.vim'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/limelight.vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
@@ -48,7 +44,7 @@ let mapleader = ','
 
 syntax on
 filetype plugin indent on
-colorscheme flattened_dark
+" colorscheme flattened_dark
 
 set term=screen-256color
 set nocompatible
@@ -62,19 +58,10 @@ set noexpandtab
 set wrap
 set linebreak
 set smartindent
-set cursorline
 set showcmd
 set tabstop=4
 set shiftwidth=4
 
-" Syntastic Settings
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 1
-" let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 0
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
 
 " Writeroom things [Goyo]
 let g:limelight_conceal_ctermfg = 'gray'
@@ -106,63 +93,6 @@ nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 noremap <C-H> <C-W><C-H>
-
-" CamelCase
-" call camelcasemotion#CreateMotionMappings('<leader>')
-map <silent> w <Plug>CamelCaseMotion_w
-map <silent> b <Plug>CamelCaseMotion_b
-map <silent> e <Plug>CamelCaseMotion_e
-map <silent> ge <Plug>CamelCaseMotion_ge
-omap <silent> iw <Plug>CamelCaseMotion_iw
-xmap <silent> iw <Plug>CamelCaseMotion_iw
-omap <silent> ib <Plug>CamelCaseMotion_ib
-xmap <silent> ib <Plug>CamelCaseMotion_ib
-omap <silent> ie <Plug>CamelCaseMotion_ie
-xmap <silent> ie <Plug>CamelCaseMotion_ie
-sunmap w
-sunmap b
-sunmap e
-sunmap ge
-
-" Airline shit
-let g:airline#extensions#tabline#enabled = 1
-set noshowmode
-let g:airline_theme='solarized'
-let g:airline_solarized_bg='dark'
-
-if !exists('g:airline_symbols')
-let g:airline_symbols = {}
-endif
-
-" unicode symbols
-let g:airline_left_sep = '»'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
-let g:airline_right_sep = '◀'
-let g:airline_symbols.crypt = '🔒'
-let g:airline_symbols.linenr = '☰'
-let g:airline_symbols.linenr = '␊'
-let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.maxlinenr = ''
-let g:airline_symbols.maxlinenr = '㏑'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.paste = '∥'
-let g:airline_symbols.spell = 'Ꞩ'
-let g:airline_symbols.notexists = 'Ɇ'
-let g:airline_symbols.whitespace = 'Ξ'
-
-" powerline symbols
-let g:airline_left_alt_sep = ''
-let g:airline_left_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = '☰'
-let g:airline_symbols.maxlinenr = ''
 
 " ale bindings 
 nmap <silent> gE <Plug>(ale_previous_wrap)
