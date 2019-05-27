@@ -47,12 +47,17 @@ filetype plugin indent on
 " colorscheme flattened_dark
 
 set term=screen-256color
+" set spellsuggest=best,10
+" set spell spelllang=en_gb
+set nobackup
+set noswapfile
 set nocompatible
 set encoding=UTF-8
 set number
 set relativenumber
 set splitbelow
 set splitright
+set cursorline
 set mouse=a
 set noexpandtab
 set wrap
@@ -61,6 +66,7 @@ set smartindent
 set showcmd
 set tabstop=4
 set shiftwidth=4
+set clipboard=unnamedplus
 
 
 " Writeroom things [Goyo]
