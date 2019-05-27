@@ -1,1 +1,85 @@
-/home/firaaz/.config/termite/config
+[options]
+scroll_on_output = false
+scroll_on_keystroke = true
+audible_bell = false
+mouse_autohide = false
+allow_bold = true
+dynamic_title = true
+urgent_on_bell = true
+clickable_url = true
+font = hack 11
+scrollback_lines = 10000
+search_wrap = true
+#icon_name = terminal
+#geometry = 640x480
+
+# "system", "on" or "off"
+cursor_blink = off
+
+# "block", "underline" or "ibeam"
+cursor_shape = block
+
+# $BROWSER is used by default if set, with xdg-open as a fallback
+#browser = xdg-open
+
+# set size hints for the window
+#size_hints = false
+
+# Hide links that are no longer valid in url select overlay mode
+filter_unmatched_urls = true
+
+# emit escape sequences for extra modified keys
+#modify_other_keys = false
+
+[colors]
+# special
+foreground      = #f1ebeb
+foreground_bold = #f1ebeb
+cursor          = #f1ebeb
+background      = #0d0d0d
+#background = rgba(10, 10, 10, 0.95)
+
+# black
+color0  = #1b1b1b
+color8  = #666666
+
+# red
+color1  = #c50039
+color9  = #ff0048
+
+# green
+color2  = #90b500
+color10 = #b9e800
+
+# yellow
+color3  = #9e8f00
+color11 = #ffe700
+
+# blue
+color4  = #007c93
+color12 = #00aed9
+
+# magenta
+color5  = #c5017a
+color13 = #ff009e
+
+# cyan
+color6  = #009388
+color14 = #00ffea
+
+# white
+color7  = #c1c1c1
+color15 = #ffffff
+
+[hints]
+#font = Monospace 12
+#foreground = #dcdccc
+#background = #3f3f3f
+#active_foreground = #e68080
+#active_background = #3f3f3f
+#padding = 2
+#border = #3f3f3f
+#border_width = 0.5
+#roundness = 2.0
+
+# vim: ft=dosini cms=#%s
