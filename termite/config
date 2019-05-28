@@ -32,54 +32,42 @@ filter_unmatched_urls = true
 #modify_other_keys = false
 
 [colors]
-# special
-foreground      = #f1ebeb
-foreground_bold = #f1ebeb
-cursor          = #f1ebeb
-background      = #0d0d0d
-#background = rgba(10, 10, 10, 0.95)
+# hard contrast: background = #1d2021
+background = #282828
+# soft contrast: background = #32302f
+foreground = #ebdbb2
+foreground_bold = #ebdbb2
 
-# black
-color0  = #1b1b1b
-color8  = #666666
+# dark0 + gray
+color0 = #282828
+color8 = #928374
 
-# red
-color1  = #c50039
-color9  = #ff0048
+# neutral_red + bright_red
+color1 = #cc241d
+color9 = #fb4934
 
-# green
-color2  = #90b500
-color10 = #b9e800
+# neutral_green + bright_green
+color2 = #98971a
+color10 = #b8bb26
 
-# yellow
-color3  = #9e8f00
-color11 = #ffe700
+# neutral_yellow + bright_yellow
+color3 = #d79921
+color11 = #fabd2f
 
-# blue
-color4  = #007c93
-color12 = #00aed9
+# neutral_blue + bright_blue
+color4 = #458588
+color12 = #83a598
 
-# magenta
-color5  = #c5017a
-color13 = #ff009e
+# neutral_purple + bright_purple
+color5 = #b16286
+color13 = #d3869b
 
-# cyan
-color6  = #009388
-color14 = #00ffea
+# neutral_aqua + faded_aqua
+color6 = #689d6a
+color14 = #8ec07c
 
-# white
-color7  = #c1c1c1
-color15 = #ffffff
-
-[hints]
-#font = Monospace 12
-#foreground = #dcdccc
-#background = #3f3f3f
-#active_foreground = #e68080
-#active_background = #3f3f3f
-#padding = 2
-#border = #3f3f3f
-#border_width = 0.5
-#roundness = 2.0
+# light4 + light1
+color7 = #a89984
+color15 = #ebdbb2
 
 # vim: ft=dosini cms=#%s
