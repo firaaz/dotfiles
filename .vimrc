@@ -39,6 +39,9 @@ Plug 'morhetz/gruvbox'
 
 " language specific
 Plug 'deoplete-plugins/deoplete-jedi'
+Plug 'deoplete-plugins/deoplete-tag'
+" if installing tern gives an error do it manually with sudo
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' } 
 
 call plug#end()
 
