@@ -73,6 +73,7 @@ set showcmd
 set tabstop=4
 set shiftwidth=4
 set clipboard=unnamedplus
+set colorcolumn=80
 
 
 " Writeroom things [Goyo]
