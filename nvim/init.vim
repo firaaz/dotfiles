@@ -1,17 +1,6 @@
-" vim must be above version 8 and with python support
-
-" used to see if vim-plug is installed if not installs it
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
 call plug#begin('~/.vim/plugged')
 
 " core
-Plug 'roxma/vim-hug-neovim-rpc'
-Plug 'roxma/nvim-yarp'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-repeat'
@@ -19,15 +8,14 @@ Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-fugitive'
 Plug 'jiangmiao/auto-pairs'
 Plug 'w0rp/ale'
-Plug 'Shougo/denite.nvim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'Shougo/deoplete.nvim'
 Plug 'szw/vim-tags'
 Plug 'scrooloose/nerdcommenter'
 Plug 'sheerun/vim-polyglot'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'benmills/vimux'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'pedsm/sprint'
 
@@ -54,7 +42,6 @@ filetype plugin indent on
 colorscheme gruvbox
 set background=dark
 
-set term=screen-256color
 " set spellsuggest=best,10
 " set spell spelllang=en_gb
 set nobackup
@@ -78,6 +65,7 @@ set clipboard=unnamedplus
 set colorcolumn=80
 
 
+
 " Writeroom things [Goyo]
 let g:limelight_conceal_ctermfg = 'gray'
 nnoremap <leader>g :Goyo<Return>
@@ -95,13 +83,6 @@ map <space>c <plug>NERDCommenterToggle
 let g:deoplete#enable_at_startup = 1
 " for making tab work for autocomplete list
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-
-" Denite
-nnoremap <space>v :Denite file/rec -default-action=vsplit<cr>
-nnoremap <space>f :Denite file/rec -winheight=10 <cr>
-nnoremap <space>s :Denite file/rec -default-action=split<cr>
-nnoremap <space>l :Denite line -auto-preview<cr>
-nnoremap <space>b :Denite buffer<CR>
 
 " remapping the splits from ctrl+w + direction ==> ctrl + directions
 nnoremap <C-J> <C-W><C-J>
@@ -167,7 +148,6 @@ let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = '☰'
 let g:airline_symbols.maxlinenr = ''
 let g:airline_symbols.dirty="⚡"
-
 
 " fzf
 nmap <space>f :Files<Return>
