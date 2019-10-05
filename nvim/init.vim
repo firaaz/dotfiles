@@ -1,4 +1,4 @@
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.local/share/nvim/plugged')
 
 " core
 Plug 'tpope/vim-surround'
@@ -8,10 +8,8 @@ Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-fugitive'
 Plug 'jiangmiao/auto-pairs'
 Plug 'w0rp/ale'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'Shougo/deoplete.nvim'
 Plug 'szw/vim-tags'
+Plug 'Shougo/deoplete.nvim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'sheerun/vim-polyglot'
 Plug 'christoomey/vim-tmux-navigator'
@@ -19,10 +17,15 @@ Plug 'benmills/vimux'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'pedsm/sprint'
 
+" fuzzy finding
+Plug 'airblade/vim-rooter'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+
 " theming
 Plug 'junegunn/goyo.vim'
-Plug 'vim-airline/vim-airline'
 Plug 'junegunn/limelight.vim'
+Plug 'itchyny/lightline.vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
 Plug 'morhetz/gruvbox'
@@ -30,8 +33,9 @@ Plug 'morhetz/gruvbox'
 " language specific
 Plug 'deoplete-plugins/deoplete-jedi'
 Plug 'deoplete-plugins/deoplete-tag'
+Plug 'sebastianmarkow/deoplete-rust'
 " if installing tern gives an error do it manually with sudo
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' } 
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 
 call plug#end()
 
@@ -64,13 +68,18 @@ set shiftwidth=4
 set clipboard=unnamedplus
 set colorcolumn=80
 
-
+" Permanent undo 
+set undodir=~/.vimdid
+set undofile
 
 " Writeroom things [Goyo]
 let g:limelight_conceal_ctermfg = 'gray'
 nnoremap <leader>g :Goyo<Return>
 autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
+
+" lightline
+let g:lightline = {'colorscheme' : 'seoul256'}
 
 " NERDcommenter settings
 let g:NERDSpaceDelims = 1
@@ -87,7 +96,7 @@ inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 " remapping the splits from ctrl+w + direction ==> ctrl + directions
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
+nnorema <C-L> <C-W><C-L>
 noremap <C-H> <C-W><C-H>
 
 " ale bindings 
@@ -112,46 +121,15 @@ nmap <space>vs vip<space>vs<CR>
 " Sprint
 nnoremap <f5> :Sprint<CR>
 
-
-" airline
-if !exists('g:airline_symbols')
-let g:airline_symbols = {}
-endif
-
-" unicode symbols
-let g:airline_left_sep = '»'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
-let g:airline_right_sep = '◀'
-let g:airline_symbols.crypt = '🔒'
-let g:airline_symbols.linenr = '☰'
-let g:airline_symbols.linenr = '␊'
-let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.maxlinenr = ''
-let g:airline_symbols.maxlinenr = '㏑'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.paste = '∥'
-let g:airline_symbols.spell = 'Ꞩ'
-let g:airline_symbols.notexists = 'Ɇ'
-let g:airline_symbols.whitespace = 'Ξ'
-
-" powerline symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = '☰'
-let g:airline_symbols.maxlinenr = ''
-let g:airline_symbols.dirty="⚡"
-
 " fzf
 nmap <space>f :Files<Return>
 nmap <space>t :Tags<Return>
 nmap <space>b :Buffer<Return>
 nmap <space>l :Lines<Return>
 let g:fzf_tags_command = 'ctags -R'
+
+"" LANGUAGE SPECIFICS
+" RUST
+let g:deoplete#sources#rust#racer_binary='/home/firaaz/.cargo/bin/racer'
+let g:deoplete#sources#rust#rust_source_path='/home/firaaz/Downloads/rust_bin/rust/src'
+let g:deoplete#sources#rust#documentation_max_height=20
