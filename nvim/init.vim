@@ -6,16 +6,24 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-fugitive'
+Plug 'tbodt/deoplete-tabnine', {'do': './install.sh'}
 Plug 'jiangmiao/auto-pairs'
 Plug 'w0rp/ale'
 Plug 'szw/vim-tags'
 Plug 'Shougo/deoplete.nvim'
-Plug 'scrooloose/nerdcommenter'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sheerun/vim-polyglot'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'benmills/vimux'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'pedsm/sprint'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
 
 " fuzzy finding
 Plug 'airblade/vim-rooter'
@@ -24,30 +32,35 @@ Plug 'junegunn/fzf.vim'
 
 " theming
 Plug 'junegunn/goyo.vim'
-Plug 'junegunn/limelight.vim'
-Plug 'itchyny/lightline.vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
-Plug 'morhetz/gruvbox'
+Plug 'lifepillar/vim-solarized8'
 
 " language specific
 Plug 'deoplete-plugins/deoplete-jedi'
 Plug 'deoplete-plugins/deoplete-tag'
-Plug 'sebastianmarkow/deoplete-rust'
+" Plug 'sebastianmarkow/deoplete-rust'
 " if installing tern gives an error do it manually with sudo
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+Plug 'Shougo/deoplete-clangx'
 
 call plug#end()
 
 let mapleader = ','
 
+let g:solarized_termtrans=1
+let g:solarized_extra_hi_groups=1
+set t_8f=[38;2;%lu;%lu;%lum
+set t_8b=[48;2;%lu;%lu;%lum
 syntax on
 filetype plugin indent on
-colorscheme gruvbox
+set termguicolors
+colorscheme solarized8_flat
 set background=dark
 
 " set spellsuggest=best,10
 " set spell spelllang=en_gb
+set timeoutlen=300 ttimeoutlen=0
 set nobackup
 set noswapfile
 set nocompatible
@@ -56,7 +69,6 @@ set number
 set relativenumber
 set splitbelow
 set splitright
-set cursorline
 set mouse=a
 set noexpandtab
 set wrap
@@ -67,19 +79,16 @@ set tabstop=4
 set shiftwidth=4
 set clipboard=unnamedplus
 set colorcolumn=80
+" set cursorline
 
 " Permanent undo 
 set undodir=~/.vimdid
 set undofile
 
 " Writeroom things [Goyo]
-let g:limelight_conceal_ctermfg = 'gray'
 nnoremap <leader>g :Goyo<Return>
-autocmd! User GoyoEnter Limelight
-autocmd! User GoyoLeave Limelight!
-
-" lightline
-let g:lightline = {'colorscheme' : 'seoul256'}
+autocmd! User GoyoEnter 
+autocmd! User GoyoLeave
 
 " NERDcommenter settings
 let g:NERDSpaceDelims = 1
@@ -128,8 +137,16 @@ nmap <space>b :Buffer<Return>
 nmap <space>l :Lines<Return>
 let g:fzf_tags_command = 'ctags -R'
 
-"" LANGUAGE SPECIFICS
-" RUST
-let g:deoplete#sources#rust#racer_binary='/home/firaaz/.cargo/bin/racer'
-let g:deoplete#sources#rust#rust_source_path='/home/firaaz/Downloads/rust_bin/rust/src'
-let g:deoplete#sources#rust#documentation_max_height=20
+" nerdtree
+map <leader>t :NERDTreeToggle<CR>
+
+" LANGUAGE SUPPORT
+let g:LanguageClient_serverCommands = {'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls']}
+if executable('rls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'rls',
+        \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
+        \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
+        \ 'whitelist': ['rust'],
+        \ })
+endif
