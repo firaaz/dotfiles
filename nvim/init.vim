@@ -41,16 +41,13 @@ Plug 'benmills/vimux'
 Plug 'sheerun/vim-polyglot'
 call plug#end()
 
-let g:solarized_termtrans=1
-let g:solarized_extra_hi_groups=1
-
 set t_8f=[38;2;%lu;%lu;%lum
 set t_8b=[48;2;%lu;%lu;%lum
 
 syntax on
 filetype plugin indent on
 set termguicolors
-colorscheme molokai
+colorscheme Benokai
 set background=dark
 
 set mouse=a
@@ -119,9 +116,6 @@ map <leader>vi :VimuxInspectRunner<CR>
 
 vmap <leader>vs "vy :call VimuxSlime()<CR>
 nmap <leader>vs vip<space>vs<CR>
-
-" Sprint
-nnoremap <f5> :Sprint<CR>
 
 " fzf
 nmap <leader>f :Files<Return>
