@@ -1,7 +1,13 @@
 let mapleader = ','
 
-call plug#begin('~/.local/share/nvim/plugged')
+"" Install the Coc extensions through CocInstall
+" coc-tabnine
+" coc-snippets
+" coc-python
+" coc-json
+" coc-rls
 
+call plug#begin('~/.local/share/nvim/plugged')
 " core
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
@@ -11,10 +17,10 @@ Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'ntpeters/vim-better-whitespace'
 
 " autocomplete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'neoclide/coc-tabnine'
 
 " fuzzy finding
 Plug 'airblade/vim-rooter'
@@ -33,11 +39,7 @@ Plug 'benmills/vimux'
 
 " languages
 Plug 'sheerun/vim-polyglot'
-Plug 'neoclide/coc-python'
-Plug 'neoclide/coc-json'
-
 call plug#end()
-
 
 let g:solarized_termtrans=1
 let g:solarized_extra_hi_groups=1
@@ -48,7 +50,7 @@ set t_8b=[48;2;%lu;%lu;%lum
 syntax on
 filetype plugin indent on
 set termguicolors
-colorscheme solarized8_flat
+colorscheme molokai
 set background=dark
 
 set mouse=a
@@ -72,16 +74,14 @@ set tabstop=4
 set shiftwidth=4
 set clipboard=unnamedplus
 set colorcolumn=83
-
 set listchars=tab:▸\ ,eol:¬
-
 set cmdheight=2
 set updatetime=300
 set shortmess+=c
 set signcolumn=yes
 
 
-" for system clipboard support 
+" for system clipboard support
 function! ClipboardYank()
   call system('xclip -i -selection clipboard', @@)
 endfunction
@@ -103,8 +103,8 @@ map <leader>c <plug>NERDCommenterToggle
 " remapping the splits from ctrl+w + direction ==> ctrl + directions
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
-nnorema <C-L> <C-W><C-L>
-noremap <C-H> <C-W><C-H>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 
 " Vimux settings
 function! VimuxSlime()
@@ -130,6 +130,10 @@ nmap <leader>l :Lines<Return>
 
 " nerdtree
 map <leader>t :NERDTreeToggle<CR>
+
+" whitespace
+nmap <leader>w :ToggleWhitespace<CR>
+nmap <leader>wc :StripWhitespace<CR>
 
 """" COC SETTINGS
 nmap <silent> gd <Plug>(coc-definition)
@@ -162,10 +166,11 @@ endfunction
 call SetupCommandAbbrs('C', 'CocConfig')
 
 " use tab for completion
+
 inoremap <silent><expr> <TAB>
-\ pumvisible() ? "\<C-n>" :
-\ <SID>check_back_space() ? "\<TAB>" :
-\ coc#refresh()
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
