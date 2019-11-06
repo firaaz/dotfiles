@@ -1,3 +1,5 @@
+let mapleader = ','
+
 call plug#begin('~/.local/share/nvim/plugged')
 
 " core
@@ -6,24 +8,13 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-fugitive'
-Plug 'tbodt/deoplete-tabnine', {'do': './install.sh'}
-Plug 'jiangmiao/auto-pairs'
-Plug 'w0rp/ale'
-Plug 'szw/vim-tags'
-Plug 'Shougo/deoplete.nvim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'sheerun/vim-polyglot'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'benmills/vimux'
-Plug 'skywind3000/asyncrun.vim'
-Plug 'pedsm/sprint'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+
+" autocomplete
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc-tabnine'
 
 " fuzzy finding
 Plug 'airblade/vim-rooter'
@@ -31,76 +22,83 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " theming
-Plug 'junegunn/goyo.vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
 Plug 'lifepillar/vim-solarized8'
+Plug 'flazz/vim-colorschemes'
 
-" language specific
-Plug 'deoplete-plugins/deoplete-jedi'
-Plug 'deoplete-plugins/deoplete-tag'
-" Plug 'sebastianmarkow/deoplete-rust'
-" if installing tern gives an error do it manually with sudo
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
-Plug 'Shougo/deoplete-clangx'
+" tmux
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'benmills/vimux'
+
+" languages
+Plug 'sheerun/vim-polyglot'
+Plug 'neoclide/coc-python'
+Plug 'neoclide/coc-json'
 
 call plug#end()
 
-let mapleader = ','
 
 let g:solarized_termtrans=1
 let g:solarized_extra_hi_groups=1
-set t_8f=[38;2;%lu;%lu;%lum
-set t_8b=[48;2;%lu;%lu;%lum
+
+set t_8f=[38;2;%lu;%lu;%lum
+set t_8b=[48;2;%lu;%lu;%lum
+
 syntax on
 filetype plugin indent on
 set termguicolors
 colorscheme solarized8_flat
 set background=dark
 
-" set spellsuggest=best,10
-" set spell spelllang=en_gb
+set mouse=a
+set hidden
 set timeoutlen=300 ttimeoutlen=0
 set nobackup
+set nowritebackup
 set noswapfile
+set wrap
 set nocompatible
 set encoding=UTF-8
 set number
 set relativenumber
 set splitbelow
 set splitright
-set mouse=a
 set noexpandtab
-set wrap
 set linebreak
 set smartindent
 set showcmd
 set tabstop=4
 set shiftwidth=4
 set clipboard=unnamedplus
-set colorcolumn=80
-" set cursorline
+set colorcolumn=83
 
-" Permanent undo 
-set undodir=~/.vimdid
-set undofile
+set listchars=tab:▸\ ,eol:¬
 
-" Writeroom things [Goyo]
-nnoremap <leader>g :Goyo<Return>
-autocmd! User GoyoEnter 
-autocmd! User GoyoLeave
+set cmdheight=2
+set updatetime=300
+set shortmess+=c
+set signcolumn=yes
+
+
+" for system clipboard support 
+function! ClipboardYank()
+  call system('xclip -i -selection clipboard', @@)
+endfunction
+function! ClipboardPaste()
+  let @@ = system('xclip -o -selection clipboard')
+endfunction
+
+vnoremap <silent> y y:call ClipboardYank()<cr>
+vnoremap <silent> d d:call ClipboardYank()<cr>
+nnoremap <silent> p :call ClipboardPaste()<cr>p
 
 " NERDcommenter settings
 let g:NERDSpaceDelims = 1
 let g:NERDCompactSexyComs = 1
 let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
-map <space>c <plug>NERDCommenterToggle
-
-" Deoplete
-let g:deoplete#enable_at_startup = 1
-" for making tab work for autocomplete list
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+map <leader>c <plug>NERDCommenterToggle
 
 " remapping the splits from ctrl+w + direction ==> ctrl + directions
 nnoremap <C-J> <C-W><C-J>
@@ -108,45 +106,69 @@ nnoremap <C-K> <C-W><C-K>
 nnorema <C-L> <C-W><C-L>
 noremap <C-H> <C-W><C-H>
 
-" ale bindings 
-nmap <silent> gE <Plug>(ale_previous_wrap)
-nmap <silent> ge <Plug>(ale_next_wrap)
-
-" Vimux bindings
-
+" Vimux settings
 function! VimuxSlime()
  call VimuxSendText(@v)
  call VimuxSendKeys("Enter")
 endfunction
 
-map <space>vp :VimuxPromptCommand<CR>
-map <space>vl :VimuxRunLastCommand<CR>
-map <space>vq :VimuxCloseRunner<CR>
-map <space>vi :VimuxInspectRunner<CR>
+map <leader>vp :VimuxPromptCommand<CR>
+map <leader>vl :VimuxRunLastCommand<CR>
+map <leader>vq :VimuxCloseRunner<CR>
+map <leader>vi :VimuxInspectRunner<CR>
 
-vmap <space>vs "vy :call VimuxSlime()<CR>
-nmap <space>vs vip<space>vs<CR>
+vmap <leader>vs "vy :call VimuxSlime()<CR>
+nmap <leader>vs vip<space>vs<CR>
 
 " Sprint
 nnoremap <f5> :Sprint<CR>
 
 " fzf
-nmap <space>f :Files<Return>
-nmap <space>t :Tags<Return>
-nmap <space>b :Buffer<Return>
-nmap <space>l :Lines<Return>
-let g:fzf_tags_command = 'ctags -R'
+nmap <leader>f :Files<Return>
+nmap <leader>b :Buffer<Return>
+nmap <leader>l :Lines<Return>
 
 " nerdtree
 map <leader>t :NERDTreeToggle<CR>
 
-" LANGUAGE SUPPORT
-let g:LanguageClient_serverCommands = {'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls']}
-if executable('rls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'rls',
-        \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
-        \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
-        \ 'whitelist': ['rust'],
-        \ })
-endif
+"""" COC SETTINGS
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+
+" rename the current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+function! SetupCommandAbbrs(from, to)
+  exec 'cnoreabbrev <expr> '.a:from
+        \ .' ((getcmdtype() ==# ":" && getcmdline() ==# "'.a:from.'")'
+        \ .'? ("'.a:to.'") : ("'.a:from.'"))'
+endfunction
+
+" Use :C to open coc config
+call SetupCommandAbbrs('C', 'CocConfig')
+
+" use tab for completion
+inoremap <silent><expr> <TAB>
+\ pumvisible() ? "\<C-n>" :
+\ <SID>check_back_space() ? "\<TAB>" :
+\ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+let col = col('.') - 1
+return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
