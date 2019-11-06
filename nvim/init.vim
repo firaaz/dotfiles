@@ -1,4 +1,4 @@
-let mapleader = ','
+let mapleader = ' '
 
 "" Install the Coc extensions through CocInstall
 " coc-tabnine
