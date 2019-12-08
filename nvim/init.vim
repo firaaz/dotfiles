@@ -6,6 +6,7 @@ let mapleader = ' '
 " coc-python
 " coc-json
 " coc-rls
+" coc-html
 
 call plug#begin('~/.local/share/nvim/plugged')
 " core
@@ -18,6 +19,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ntpeters/vim-better-whitespace'
+Plug 'editorconfig/editorconfig-vim'
 
 " autocomplete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -31,7 +33,10 @@ Plug 'junegunn/fzf.vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
 Plug 'lifepillar/vim-solarized8'
-Plug 'flazz/vim-colorschemes'
+Plug 'machakann/vim-highlightedyank'
+
+" Goyo
+Plug 'junegunn/goyo.vim'
 
 " tmux
 Plug 'christoomey/vim-tmux-navigator'
@@ -39,15 +44,19 @@ Plug 'benmills/vimux'
 
 " languages
 Plug 'sheerun/vim-polyglot'
+
 call plug#end()
 
-set t_8f=[38;2;%lu;%lu;%lum
-set t_8b=[48;2;%lu;%lu;%lum
+if exists('+termguicolors')
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
 
 syntax on
 filetype plugin indent on
 set termguicolors
-colorscheme Benokai
+colorscheme solarized8_flat
 set background=dark
 
 set mouse=a
@@ -77,6 +86,8 @@ set updatetime=300
 set shortmess+=c
 set signcolumn=yes
 
+" Remove highlight after search by pressing esc
+nnoremap <silent> <esc> :noh<cr><esc>
 
 " for system clipboard support
 function! ClipboardYank()
@@ -96,6 +107,9 @@ let g:NERDCompactSexyComs = 1
 let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
 map <leader>c <plug>NERDCommenterToggle
+
+" Goyo
+nmap <leader>a :Goyo<CR>
 
 " remapping the splits from ctrl+w + direction ==> ctrl + directions
 nnoremap <C-J> <C-W><C-J>
@@ -129,12 +143,14 @@ map <leader>t :NERDTreeToggle<CR>
 nmap <leader>w :ToggleWhitespace<CR>
 nmap <leader>wc :StripWhitespace<CR>
 
+" editorconfig
+let g:EditorConfig_exclude_patterns = ['fugitive://.*']
+
 """" COC SETTINGS
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
-
 
 " rename the current word
 nmap <leader>rn <Plug>(coc-rename)
@@ -160,7 +176,6 @@ endfunction
 call SetupCommandAbbrs('C', 'CocConfig')
 
 " use tab for completion
-
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
