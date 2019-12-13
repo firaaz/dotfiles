@@ -3,10 +3,12 @@ let mapleader = ' '
 "" Install the Coc extensions through CocInstall
 " coc-tabnine
 " coc-snippets
+" coc-rls
+" coc-tsserver
 " coc-python
 " coc-json
-" coc-rls
 " coc-html
+" coc-emmet
 
 call plug#begin('~/.local/share/nvim/plugged')
 " core
@@ -34,6 +36,8 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
 Plug 'lifepillar/vim-solarized8'
 Plug 'machakann/vim-highlightedyank'
+Plug 'flrnd/plastic.vim'
+Plug 'itchyny/lightline.vim'
 
 " Goyo
 Plug 'junegunn/goyo.vim'
@@ -56,17 +60,18 @@ endif
 syntax on
 filetype plugin indent on
 set termguicolors
-colorscheme solarized8_flat
 set background=dark
+colorscheme plastic
 
+set nocompatible
 set mouse=a
 set hidden
 set timeoutlen=300 ttimeoutlen=0
 set nobackup
 set nowritebackup
+set noshowmode
 set noswapfile
 set wrap
-set nocompatible
 set encoding=UTF-8
 set number
 set relativenumber
@@ -85,6 +90,24 @@ set cmdheight=2
 set updatetime=300
 set shortmess+=c
 set signcolumn=yes
+
+function! CommandRemaps(from, to)
+  exec 'cnoreabbrev <expr> '.a:from
+        \ .' ((getcmdtype() ==# ":" && getcmdline() ==# "'.a:from.'")'
+        \ .'? ("'.a:to.'") : ("'.a:from.'"))'
+endfunction
+
+"" command remaps
+call CommandRemaps('s', 'e ~/.config/nvim/init.vim')
+call CommandRemaps('C', 'CocConfig')
+
+" usual typos
+call CommandRemaps('W', 'w')
+call CommandRemaps('Wq', 'wq')
+call CommandRemaps('qw', 'wq')
+
+" lightline
+let g:lightline = { 'colorscheme': 'plastic' }
 
 " Remove highlight after search by pressing esc
 nnoremap <silent> <esc> :noh<cr><esc>
@@ -146,14 +169,14 @@ nmap <leader>wc :StripWhitespace<CR>
 " editorconfig
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
 
-"""" COC SETTINGS
+"""" COC settings
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " rename the current word
-nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>cr <Plug>(coc-rename)
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -166,23 +189,18 @@ function! s:show_documentation()
   endif
 endfunction
 
-function! SetupCommandAbbrs(from, to)
-  exec 'cnoreabbrev <expr> '.a:from
-        \ .' ((getcmdtype() ==# ":" && getcmdline() ==# "'.a:from.'")'
-        \ .'? ("'.a:to.'") : ("'.a:from.'"))'
-endfunction
-
-" Use :C to open coc config
-call SetupCommandAbbrs('C', 'CocConfig')
-
-" use tab for completion
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
+" use tab and S-Tab for navigation and Enter to select
 function! s:check_back_space() abort
-let col = col('.') - 1
-return !col || getline('.')[col - 1]  =~# '\s'
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
