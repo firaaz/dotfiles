@@ -78,6 +78,10 @@ set nowritebackup
 set noswapfile
 set wrap
 set number
+<<<<<<< HEAD
+=======
+" set relativenumber
+>>>>>>> 00d6f20995463919564d0d636615d916a945b9d0
 set splitbelow
 set splitright
 set noexpandtab
@@ -87,7 +91,7 @@ set showcmd
 set tabstop=4
 set shiftwidth=4
 set clipboard=unnamedplus
-set colorcolumn=83
+" set colorcolumn=83
 set listchars=tab:▸\ ,eol:¬
 set updatetime=300
 set shortmess+=c
