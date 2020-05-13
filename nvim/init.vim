@@ -19,9 +19,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-fugitive'
-Plug 'scrooloose/nerdcommenter'
-" Plug 'scrooloose/nerdtree'
-" Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tpope/vim-commentary'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'honza/vim-snippets'
@@ -40,9 +38,9 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
 Plug 'machakann/vim-highlightedyank'
 Plug 'lifepillar/vim-solarized8'
-Plug 'flrnd/plastic.vim'
 Plug 'mkarmona/materialbox'
 Plug 'itchyny/landscape.vim'
+Plug 'ayu-theme/ayu-vim'
 
 " tmux
 Plug 'christoomey/vim-tmux-navigator'
@@ -52,6 +50,7 @@ Plug 'benmills/vimux'
 Plug 'sheerun/vim-polyglot'
 Plug 'pangloss/vim-javascript'
 Plug 'neovimhaskell/haskell-vim'
+Plug 'vim-latex/vim-latex'
 
 call plug#end()
 
@@ -64,8 +63,10 @@ endif
 syntax on
 filetype plugin indent on
 set termguicolors
-set background=dark
-colorscheme landscape
+" set background=dark
+let ayucolor="dark"
+colorscheme ayu
+
 
 set nocompatible
 set mouse=a
@@ -78,10 +79,6 @@ set nowritebackup
 set noswapfile
 set wrap
 set number
-<<<<<<< HEAD
-=======
-" set relativenumber
->>>>>>> 00d6f20995463919564d0d636615d916a945b9d0
 set splitbelow
 set splitright
 set noexpandtab
@@ -97,12 +94,13 @@ set updatetime=300
 set shortmess+=c
 set signcolumn=yes
 set encoding=UTF-8
+set updatetime=100
 
 " Theme
 let g:landscape_highlight_todo = 1
 
-" auto pairs
-let g:AutoPairs = {'(':')', '[':']', '{':'}'}
+" " auto pairs
+" let g:AutoPairs = {'(':')', '[':']', '{':'}'}
 
 function! CommandRemaps(from, to)
   exec 'cnoreabbrev <expr> '.a:from
@@ -162,7 +160,7 @@ vmap <leader>vs "vy :call VimuxSlime()<CR>
 nmap <leader>vs vip<space>vs<CR>
 
 " fzf
-nmap <leader>f :Files<Return>
+nmap <leader><Space> :Files<Return>
 nmap <leader>b :Buffer<Return>
 nmap <leader>l :Lines<Return>
 
@@ -222,4 +220,4 @@ inoremap <silent><expr> <Tab>
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+noremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
