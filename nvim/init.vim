@@ -1,6 +1,7 @@
 let mapleader = ' '
 
 "" Install the Coc extensions through CocInstall
+" coc-explorer
 " coc-tabnine
 " coc-snippets
 " coc-rls
@@ -20,10 +21,13 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
-Plug 'ntpeters/vim-better-whitespace'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'honza/vim-snippets'
 Plug 'jiangmiao/auto-pairs'
+Plug 'junegunn/vim-easy-align'
+Plug 'junegunn/indentLine'
+Plug 'easymotion/vim-easymotion'
+Plug 'dense-analysis/ale'
 
 " autocomplete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -41,6 +45,10 @@ Plug 'lifepillar/vim-solarized8'
 Plug 'mkarmona/materialbox'
 Plug 'itchyny/landscape.vim'
 Plug 'ayu-theme/ayu-vim'
+Plug 'dracula/vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+" Plug 'itchyny/lightline.vim'
 
 " tmux
 Plug 'christoomey/vim-tmux-navigator'
@@ -50,14 +58,14 @@ Plug 'benmills/vimux'
 Plug 'sheerun/vim-polyglot'
 Plug 'pangloss/vim-javascript'
 Plug 'neovimhaskell/haskell-vim'
-Plug 'vim-latex/vim-latex'
+Plug 'jeetsukumaran/vim-pythonsense'
 
 call plug#end()
 
 if exists('+termguicolors')
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-  set termguicolors
+	let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+	let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+	set termguicolors
 endif
 
 syntax on
@@ -67,12 +75,11 @@ set termguicolors
 let ayucolor="dark"
 colorscheme ayu
 
-
 set nocompatible
 set mouse=a
 set hidden
 set ignorecase
-set timeoutlen=300 ttimeoutlen=0
+set timeoutlen=500 ttimeoutlen=0
 set nobackup
 set showmode
 set nowritebackup
@@ -95,17 +102,27 @@ set shortmess+=c
 set signcolumn=yes
 set encoding=UTF-8
 set updatetime=100
+set noshowmode
 
 " Theme
 let g:landscape_highlight_todo = 1
 
-" " auto pairs
-" let g:AutoPairs = {'(':')', '[':']', '{':'}'}
+let g:lightline = {
+	\ 'colorscheme': 'ayu_dark',
+	\ }
+
+let g:airline_theme='minimalist'
+
+" remapping the splits from ctrl+w + direction ==> ctrl + directions
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 
 function! CommandRemaps(from, to)
-  exec 'cnoreabbrev <expr> '.a:from
-        \ .' ((getcmdtype() ==# ":" && getcmdline() ==# "'.a:from.'")'
-        \ .'? ("'.a:to.'") : ("'.a:from.'"))'
+	exec 'cnoreabbrev <expr> '.a:from
+		\ .' ((getcmdtype() ==# ":" && getcmdline() ==# "'.a:from.'")'
+		\ .'? ("'.a:to.'") : ("'.a:from.'"))'
 endfunction
 
 "" ex-mode maps
@@ -122,33 +139,27 @@ nnoremap <silent> <esc> :noh<cr><esc>
 
 " for system clipboard support
 function! ClipboardYank()
-  call system('xclip -i -selection clipboard', @@)
+	call system('xclip -i -selection clipboard', @@)
 endfunction
 function! ClipboardPaste()
-  let @@ = system('xclip -o -selection clipboard')
+	let @@ = system('xclip -o -selection clipboard')
 endfunction
 
 vnoremap <silent> y y:call ClipboardYank()<cr>
 vnoremap <silent> d d:call ClipboardYank()<cr>
 nnoremap <silent> p :call ClipboardPaste()<cr>p
 
-" NERDcommenter settings
-let g:NERDSpaceDelims = 1
-let g:NERDCompactSexyComs = 1
-let g:NERDCommentEmptyLines = 1
-let g:NERDTrimTrailingWhitespace = 1
-map <leader>c <plug>NERDCommenterToggle
+" vim-easy-align
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
 
-" remapping the splits from ctrl+w + direction ==> ctrl + directions
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 
 " Vimux settings
 function! VimuxSlime()
- call VimuxSendText(@v)
- call VimuxSendKeys("Enter")
+	call VimuxSendText(@v)
+	call VimuxSendKeys("Enter")
 endfunction
 
 map <leader>vp :VimuxPromptCommand<CR>
@@ -160,28 +171,9 @@ vmap <leader>vs "vy :call VimuxSlime()<CR>
 nmap <leader>vs vip<space>vs<CR>
 
 " fzf
-nmap <leader><Space> :Files<Return>
+nmap <leader>f :Files<Return>
 nmap <leader>b :Buffer<Return>
 nmap <leader>l :Lines<Return>
-
-" nerdtree
-" map <leader>t :NERDTreeToggle<CR>
-" let g:NERDTreeIndicatorMapCustom = {
-    " \ "Modified"  : "✹",
-    " \ "Staged"    : "✚",
-    " \ "Untracked" : "✭",
-    " \ "Renamed"   : "➜",
-    " \ "Unmerged"  : "═",
-    " \ "Deleted"   : "✖",
-    " \ "Dirty"     : "✗",
-    " \ "Clean"     : "✔︎",
-    " \ 'Ignored'   : '☒',
-    " \ "Unknown"   : "?"
-    " \ }
-
-" whitespace
-nmap <leader>w :ToggleWhitespace<CR>
-nmap <leader>wc :StripWhitespace<CR>
 
 " editorconfig
 let g:EditorConfig_exclude_patterns = ['fugitive://.*']
@@ -191,6 +183,7 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+nmap <leader>t :CocCommand explorer<CR>
 
 " rename the current word
 nmap <leader>cr <Plug>(coc-rename)
@@ -199,25 +192,57 @@ nmap <leader>cr <Plug>(coc-rename)
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
+	if (index(['vim','help'], &filetype) >= 0)
+		execute 'h '.expand('<cword>')
+	else
+		call CocAction('doHover')
+	endif
 endfunction
 
 " use tab and S-Tab for navigation and Enter to select
 function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
+	let col = col('.') - 1
+	return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
 
 inoremap <silent><expr> <Tab>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<Tab>" :
-      \ coc#refresh()
+	\ pumvisible() ? "\<C-n>" :
+	\ <SID>check_back_space() ? "\<Tab>" :
+	\ coc#refresh()
 
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-noremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" airline
+let g:airline#extensions#whitespace#enabled = 1
+
+if !exists('g:airline_symbols')
+	let g:airline_symbols = {}
+endif
+
+let g:airline_left_sep           = ''
+let g:airline_left_alt_sep       = ''
+let g:airline_right_sep          = ''
+let g:airline_right_alt_sep      = ''
+let g:airline_symbols.crypt      = '🔒'
+let g:airline_symbols.linenr     = '☰'
+let g:airline_symbols.linenr     = '␊'
+let g:airline_symbols.linenr     = '␤'
+let g:airline_symbols.linenr     = '¶'
+let g:airline_symbols.maxlinenr  = ''
+let g:airline_symbols.maxlinenr  = '㏑'
+let g:airline_symbols.branch     = '⎇'
+let g:airline_symbols.paste      = 'ρ'
+let g:airline_symbols.paste      = 'Þ'
+let g:airline_symbols.paste      = '∥'
+let g:airline_symbols.spell      = 'Ꞩ'
+let g:airline_symbols.notexists  = 'Ɇ'
+let g:airline_symbols.whitespace = 'Ξ'
+let g:airline_symbols.branch     = ''
+let g:airline_symbols.readonly   = ''
+let g:airline_symbols.linenr     = '☰'
+let g:airline_symbols.maxlinenr  = ''
+let g:airline_symbols.dirty      = "⚡"
