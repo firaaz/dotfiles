@@ -11,6 +11,9 @@ let mapleader = ' '
 " coc-html
 " coc-emmet
 " coc-angular
+" coc-texlab
+" coc-template
+" coc-todolist
 
 call plug#begin('~/.local/share/nvim/plugged')
 
@@ -28,8 +31,8 @@ Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/indentLine'
 Plug 'easymotion/vim-easymotion'
 Plug 'dense-analysis/ale'
-
-" autocomplete
+Plug 'chrisbra/SudoEdit.vim'
+Plug 'junegunn/goyo.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " fuzzy finding
@@ -41,14 +44,15 @@ Plug 'junegunn/fzf.vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
 Plug 'machakann/vim-highlightedyank'
-Plug 'lifepillar/vim-solarized8'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+" colors
 Plug 'mkarmona/materialbox'
 Plug 'itchyny/landscape.vim'
 Plug 'ayu-theme/ayu-vim'
 Plug 'dracula/vim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-" Plug 'itchyny/lightline.vim'
+Plug 'iCyMind/NeoSolarized'
 
 " tmux
 Plug 'christoomey/vim-tmux-navigator'
@@ -71,9 +75,12 @@ endif
 syntax on
 filetype plugin indent on
 set termguicolors
-" set background=dark
-let ayucolor="dark"
-colorscheme ayu
+set background=dark
+" let ayucolor="mirage"
+colorscheme materialbox
+
+" for transpareacy 
+hi! Normal ctermbg=NONE guibg=NONE
 
 set nocompatible
 set mouse=a
@@ -81,14 +88,12 @@ set hidden
 set ignorecase
 set timeoutlen=500 ttimeoutlen=0
 set nobackup
-set showmode
 set nowritebackup
 set noswapfile
 set wrap
-set number
 set splitbelow
 set splitright
-set noexpandtab
+set expandtab
 set linebreak
 set autoindent
 set showcmd
@@ -107,17 +112,21 @@ set noshowmode
 " Theme
 let g:landscape_highlight_todo = 1
 
-let g:lightline = {
-	\ 'colorscheme': 'ayu_dark',
-	\ }
-
 let g:airline_theme='minimalist'
+
+let g:indentLine_enabled = 0
+
+let g:neosolarized_contrast = "high"
+let g:neosolarized_visibility = "high"
 
 " remapping the splits from ctrl+w + direction ==> ctrl + directions
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
+
+" Remove highlight after search by pressing esc
+nnoremap <silent> <esc> :noh<cr><esc>
 
 function! CommandRemaps(from, to)
 	exec 'cnoreabbrev <expr> '.a:from
@@ -134,8 +143,9 @@ call CommandRemaps('W', 'w')
 call CommandRemaps('Wq', 'wq')
 call CommandRemaps('qw', 'wq')
 
-" Remove highlight after search by pressing esc
-nnoremap <silent> <esc> :noh<cr><esc>
+" Write sudo files
+call CommandRemaps('w!!', 'SudoWrite')
+call CommandRemaps('r!!', 'SudoRead')
 
 " for system clipboard support
 function! ClipboardYank()
@@ -183,7 +193,8 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
-nmap <leader>t :CocCommand explorer<CR>
+
+nmap <leader>e :CocCommand explorer<CR>
 
 " rename the current word
 nmap <leader>cr <Plug>(coc-rename)
@@ -246,3 +257,9 @@ let g:airline_symbols.readonly   = ''
 let g:airline_symbols.linenr     = '☰'
 let g:airline_symbols.maxlinenr  = ''
 let g:airline_symbols.dirty      = "⚡"
+
+" language specfic
+let g:ultisnips_python_style = "google"
+
+"term 
+:tnoremap <Esc> <C-\><C-n>
