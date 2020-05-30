@@ -14,6 +14,7 @@ let mapleader = ' '
 " coc-texlab
 " coc-template
 " coc-todolist
+" coc-vetur
 
 call plug#begin('~/.local/share/nvim/plugged')
 
@@ -24,15 +25,17 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
+Plug 'junegunn/vim-easy-align'
+Plug 'junegunn/indentLine'
+Plug 'junegunn/goyo.vim'
+Plug 'jremmen/vim-ripgrep'
+Plug 'majutsushi/tagbar'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'honza/vim-snippets'
 Plug 'jiangmiao/auto-pairs'
-Plug 'junegunn/vim-easy-align'
-Plug 'junegunn/indentLine'
 Plug 'easymotion/vim-easymotion'
 Plug 'dense-analysis/ale'
 Plug 'chrisbra/SudoEdit.vim'
-Plug 'junegunn/goyo.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " fuzzy finding
@@ -53,16 +56,18 @@ Plug 'itchyny/landscape.vim'
 Plug 'ayu-theme/ayu-vim'
 Plug 'dracula/vim'
 Plug 'iCyMind/NeoSolarized'
+Plug 'dguo/blood-moon', {'rtp': 'applications/vim'}
+Plug 'morhetz/gruvbox'
 
 " tmux
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'benmills/vimux'
+" Plug 'christoomey/vim-tmux-navigator'
 
 " languages
 Plug 'sheerun/vim-polyglot'
-Plug 'pangloss/vim-javascript'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'jeetsukumaran/vim-pythonsense'
+Plug 'pangloss/vim-javascript'
+Plug 'posva/vim-vue'
 
 call plug#end()
 
@@ -76,13 +81,17 @@ syntax on
 filetype plugin indent on
 set termguicolors
 set background=dark
-" let ayucolor="mirage"
-colorscheme materialbox
+" let ayucolor="dark"
+let g:airline_theme='materialbox'
+" let g:gruvbox_contrast_dark='hard'
+colorscheme landscape
 
 " for transpareacy 
-hi! Normal ctermbg=NONE guibg=NONE
+" hi! Normal ctermbg=NONE guibg=NONE
 
 set nocompatible
+set number
+set relativenumber
 set mouse=a
 set hidden
 set ignorecase
@@ -108,22 +117,20 @@ set signcolumn=yes
 set encoding=UTF-8
 set updatetime=100
 set noshowmode
+set inccommand=nosplit
+" set cursorline
 
 " Theme
-let g:landscape_highlight_todo = 1
-
-let g:airline_theme='minimalist'
 
 let g:indentLine_enabled = 0
 
-let g:neosolarized_contrast = "high"
-let g:neosolarized_visibility = "high"
+let g:highlightedyank_highlight_duration = 150
 
 " remapping the splits from ctrl+w + direction ==> ctrl + directions
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+" nnoremap <C-J> <C-W><C-J>
+" nnoremap <C-K> <C-W><C-K>
+" nnoremap <C-L> <C-W><C-L>
+" nnoremap <C-H> <C-W><C-H>
 
 " Remove highlight after search by pressing esc
 nnoremap <silent> <esc> :noh<cr><esc>
@@ -165,20 +172,6 @@ xmap ga <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
-
-" Vimux settings
-function! VimuxSlime()
-	call VimuxSendText(@v)
-	call VimuxSendKeys("Enter")
-endfunction
-
-map <leader>vp :VimuxPromptCommand<CR>
-map <leader>vl :VimuxRunLastCommand<CR>
-map <leader>vq :VimuxCloseRunner<CR>
-map <leader>vi :VimuxInspectRunner<CR>
-
-vmap <leader>vs "vy :call VimuxSlime()<CR>
-nmap <leader>vs vip<space>vs<CR>
 
 " fzf
 nmap <leader>f :Files<Return>
@@ -229,6 +222,7 @@ inoremap <silent><expr> <c-space> coc#refresh()
 
 " airline
 let g:airline#extensions#whitespace#enabled = 1
+let g:airline#extensions#tabline#enabled = 1
 
 if !exists('g:airline_symbols')
 	let g:airline_symbols = {}
@@ -259,7 +253,22 @@ let g:airline_symbols.maxlinenr  = ''
 let g:airline_symbols.dirty      = "⚡"
 
 " language specfic
-let g:ultisnips_python_style = "google"
+let g:ultisnips_python_style = 'google'
 
-"term 
-:tnoremap <Esc> <C-\><C-n>
+" term ( to use instead of tmux )
+" tnoremap <Esc> <C-\><C-n>
+
+" Maps ctrl-b + c to open a new tab window
+nnoremap <C-b>c :tabnew +terminal<CR>
+tnoremap <C-b>c <C-\><C-n>:tabnew +terminal<CR>
+
+" Maps ctrl-b + " to open a new horizontal split with a terminal
+nnoremap <C-b>" :new +terminal<CR>
+tnoremap <C-b>" <C-\><C-n>:new +terminal<CR>
+
+" Maps ctrl-b + % to open a new vertical split with a terminal
+nnoremap <C-b>% :vnew +terminal<CR>
+tnoremap <C-b>% <C-\><C-n>:vnew +terminal<cr>
+
+" Tagbar
+nmap <leader>tb :Tagbar<CR>
